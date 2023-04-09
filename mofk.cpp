@@ -1,3 +1,4 @@
+// fail 9/100.
 #include<bits/stdc++.h>
 
 using namespace std;
@@ -39,32 +40,27 @@ signed main()
         {
             char x; cin>>x;
             pre[i][j]=pre[i-1][j]+pre[i][j-1]+(x=='B')-pre[i-1][j-1];
-            cout<<x<<' ';
         }
-        cout<<"\n";
     }
     set <string> s;
-    for (int i=1 ;i<=n; i++)
-    {
-        for (int j=1 ;j<=m; j++) cout<<pre[i][j]<<' '; cout<<'\n';
-    }
-    cout<<'\n';
     for (int i=1 ;i<=n; i++)
     {
         for (int j=1; j<=m; j++)
         {
             int cl=sm(1,1,i,j-1),cr=sm(1,j,i,m),bl=sm(n,1,i+1,j-1),br=sm(i+1,j,n,m);
-            cout<<i<<' '<<j<<"\n";
             string tmp = chuyen(cl)+' '+chuyen(cr)+' '+chuyen(bl)+' '+chuyen(br);
             s.insert(tmp);
         }
     }
     while (q--)
     {
-        int a,b,c,d;
+        int a,b,c,d; cin>>a>>b>>c>>d;
         string tmp=chuyen(a)+' '+chuyen(b)+' '+chuyen(c)+' '+chuyen(d);
-        cout<<tmp<<"\n";
-       // auto x=s.find(tmp);
-       // if (x!=s.end()) cout<<"YES\n"; else cout<<"NO\n";
+        auto x=s.find(tmp);
+        if (x!=s.end())
+        {
+        	cout<<"YES\n"; 
+		}
+		else cout<<"NO\n";
     }
 }
