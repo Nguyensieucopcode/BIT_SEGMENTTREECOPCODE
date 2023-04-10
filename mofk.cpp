@@ -1,25 +1,53 @@
-// fail 9/100.
 #include<bits/stdc++.h>
 
 using namespace std;
 
-#define int long long
-const int N = 1e3+7;
-int pre[N+7][N+7];
+#define int long long 
+#define fill(x,y) memset(x,y,sizeof(x))
+const int inf = 1e9+7, N = 1e3+7;
+int arr[N+7][N+7],n,m;
 
-string chuyen(int x)
+bool check(int val)
 {
-    string tmp="";
-    while (x>0)
+    int dp[n+7][m+7],ans[n+7][m+7];
+    fill(dp,0); fill(ans,-inf);
+    dp[0][1]=1; ans[0][1]=val;
+    for (int i=1; i<=n; i++)
     {
-        tmp=char(x%10+'0')+tmp; x/=10;
+        for (int j=1; j<=m; j++)
+        {
+            if (ans[i-1][j]>arr[i][j] && dp[i-1][j]) ans[i][j]=ans[i-1][j]+arr[i][j],dp[i][j]=1;
+            if (ans[i][j-1]>arr[i][j] && dp[i][j-1]) ans[i][j]=max(ans[i][j],ans[i][j-1]+arr[i][j]),dp[i][j]=1;
+        }
     }
-    return tmp;
+    return dp[n][m];
 }
 
-int sm(int x1, int y1, int x2, int y2)
+void brute()
 {
-    return pre[x2][y2]-pre[x2][y1-1]-pre[x1-1][y2]+pre[x1-1][y1-1];
+    int ans = (int)1e9+7;
+    for (int i=0; i<=(int)1e3; i++)
+    {
+        if (check(i)) 
+        {
+            cout<<i; return;
+        }
+    }
+}
+
+void binary()
+{
+    int l=1,r=(int)1e9+7,ans=(int)1e9+7;
+    while (l<=r)
+    {
+        int g=(l+r)>>1;
+        if (check(g)) 
+        {
+            ans=min(ans,g); r=g-1;
+        }
+        else l=g+1;
+    }
+    cout<<ans;
 }
 
 signed main()
@@ -31,36 +59,19 @@ signed main()
         (void)freopen(task".inp","r",stdin);
         (void)freopen(task".out","w+",stdout);
     }
-    int n,m,q;
-    cin>>n>>m>>q;
-    memset(pre,0,sizeof(pre));
+    cin>>n>>m; int ma=0;
+    for (int i=0; i<=n+1; i++)
+    {
+        for (int j=0; j<=m+1; j++) arr[i][j]=-inf;
+    }
     for (int i=1; i<=n; i++)
     {
         for (int j=1; j<=m; j++)
         {
-            char x; cin>>x;
-            pre[i][j]=pre[i-1][j]+pre[i][j-1]+(x=='B')-pre[i-1][j-1];
+            cin>>arr[i][j];
+            ma=max(ma,arr[i][j]);
         }
     }
-    set <string> s;
-    for (int i=1 ;i<=n; i++)
-    {
-        for (int j=1; j<=m; j++)
-        {
-            int cl=sm(1,1,i,j-1),cr=sm(1,j,i,m),bl=sm(n,1,i+1,j-1),br=sm(i+1,j,n,m);
-            string tmp = chuyen(cl)+' '+chuyen(cr)+' '+chuyen(bl)+' '+chuyen(br);
-            s.insert(tmp);
-        }
-    }
-    while (q--)
-    {
-        int a,b,c,d; cin>>a>>b>>c>>d;
-        string tmp=chuyen(a)+' '+chuyen(b)+' '+chuyen(c)+' '+chuyen(d);
-        auto x=s.find(tmp);
-        if (x!=s.end())
-        {
-        	cout<<"YES\n"; 
-		}
-		else cout<<"NO\n";
-    }
+    if (ma<=(int)1e3) brute(); else binary();
+    
 }
