@@ -1,6 +1,8 @@
 #include<bits/stdc++.h>
 
 using namespace std;
+// LAZY[] là mảng lưu giá trị cần cập nhật tại mỗi nút thứ i , lazy[] được lấy từ các lazy[] của nút cha
+
 
 #define int long long
 #define FOR(i,l,r) for (int i=l; i<=r; i++)
