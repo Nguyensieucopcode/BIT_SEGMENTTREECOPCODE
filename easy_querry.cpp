@@ -30,7 +30,7 @@ void build(int id, int l, int r)
     tree[id].val = tree[id<<1].val + tree[id<<1|1].val;
 }
 
-void down(int id, int k, int dff, int kt)
+void down(int id, int k, int dff, int kt) // CẬP NHẬT LẠI GIÁ TRỊ CẦN CẬP NHẬT TẠI CÁC NÚT CON CỦA NÚT THỨ ID.
 {
     tree[id].val = tree[id].val + k*dff;
     if (k>1)
